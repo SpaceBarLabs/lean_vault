@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/spacebarlabs/lean_vault/pkg/crypto"
 	"gopkg.in/yaml.v3"
 )
@@ -24,9 +26,19 @@ const (
 	MainProvisioningKeyName = "_MAIN_OPENROUTER_PROVISIONING_KEY_"
 )
 
+// KeyVersion represents a master key version
+type KeyVersion struct {
+	ID        string
+	Key       []byte
+	CreatedAt time.Time
+}
+
 // VaultData represents the structure of the vault file
 type VaultData struct {
 	Secrets map[string]SecretEntry `yaml:"secrets"`
+	// Add key version tracking
+	CurrentKeyID string
+	KeyVersions  map[string]KeyVersion
 }
 
 // SecretEntry represents a single secret entry in the vault
@@ -40,6 +52,8 @@ type Vault struct {
 	vaultDir  string
 	vaultFile string
 	keyFile   string
+	data      *VaultData
+	masterKey []byte
 }
 
 // New creates a new vault manager
@@ -77,18 +91,36 @@ func (v *Vault) Init(mainProvisioningKey string) error {
 		return fmt.Errorf("failed to generate master key: %w", err)
 	}
 
-	// Save master key
-	if err := os.WriteFile(v.keyFile, masterKey, DefaultFileMode); err != nil {
-		return fmt.Errorf("failed to save master key: %w", err)
+	// Create initial key version
+	initialKeyID := uuid.New().String()
+	keyVersion := KeyVersion{
+		ID:        initialKeyID,
+		Key:       masterKey,
+		CreatedAt: time.Now(),
+	}
+
+	// Encrypt the main provisioning key
+	encryptedKey, err := crypto.Encrypt(masterKey, []byte(mainProvisioningKey))
+	if err != nil {
+		return fmt.Errorf("failed to encrypt main provisioning key: %w", err)
 	}
 
 	// Create initial vault data
 	vaultData := VaultData{
 		Secrets: map[string]SecretEntry{
 			MainProvisioningKeyName: {
-				Value: mainProvisioningKey,
+				Value: encryptedKey,
 			},
 		},
+		CurrentKeyID: initialKeyID,
+		KeyVersions: map[string]KeyVersion{
+			initialKeyID: keyVersion,
+		},
+	}
+
+	// Save master key
+	if err := os.WriteFile(v.keyFile, masterKey, DefaultFileMode); err != nil {
+		return fmt.Errorf("failed to save master key: %w", err)
 	}
 
 	// Marshal vault data
@@ -107,6 +139,9 @@ func (v *Vault) Init(mainProvisioningKey string) error {
 	if err := os.WriteFile(v.vaultFile, []byte(encrypted), DefaultFileMode); err != nil {
 		return fmt.Errorf("failed to save vault file: %w", err)
 	}
+
+	v.data = &vaultData
+	v.masterKey = masterKey
 
 	return nil
 }
@@ -159,6 +194,9 @@ func (v *Vault) save(vaultData *VaultData, masterKey []byte) error {
 		return fmt.Errorf("failed to save vault file: %w", err)
 	}
 
+	v.data = vaultData
+	v.masterKey = masterKey
+
 	return nil
 }
 
@@ -173,8 +211,14 @@ func (v *Vault) AddSecret(name, value, id string) error {
 		return fmt.Errorf("secret %s already exists", name)
 	}
 
+	// Encrypt the secret value
+	encryptedValue, err := crypto.Encrypt(masterKey, []byte(value))
+	if err != nil {
+		return fmt.Errorf("failed to encrypt secret: %w", err)
+	}
+
 	vaultData.Secrets[name] = SecretEntry{
-		Value: value,
+		Value: encryptedValue,
 		ID:    id,
 	}
 
@@ -183,7 +227,7 @@ func (v *Vault) AddSecret(name, value, id string) error {
 
 // GetSecret retrieves a secret from the vault
 func (v *Vault) GetSecret(name string) (string, error) {
-	vaultData, _, err := v.load()
+	vaultData, masterKey, err := v.load()
 	if err != nil {
 		return "", err
 	}
@@ -193,7 +237,13 @@ func (v *Vault) GetSecret(name string) (string, error) {
 		return "", fmt.Errorf("secret %s not found", name)
 	}
 
-	return secret.Value, nil
+	// Decrypt the secret value
+	plaintext, err := crypto.Decrypt(masterKey, secret.Value)
+	if err != nil {
+		return "", fmt.Errorf("failed to decrypt secret: %w", err)
+	}
+
+	return string(plaintext), nil
 }
 
 // ListSecrets returns a list of all secret names (excluding the main provisioning key)
@@ -268,10 +318,95 @@ func (v *Vault) UpdateSecret(name, value, id string) error {
 		return fmt.Errorf("secret %s not found", name)
 	}
 
+	// Encrypt the secret value
+	encryptedValue, err := crypto.Encrypt(masterKey, []byte(value))
+	if err != nil {
+		return fmt.Errorf("failed to encrypt secret: %w", err)
+	}
+
 	vaultData.Secrets[name] = SecretEntry{
-		Value: value,
+		Value: encryptedValue,
 		ID:    id,
 	}
 
 	return v.save(vaultData, masterKey)
+}
+
+// RotateMasterKey generates a new master key and re-encrypts all secrets
+func (v *Vault) RotateMasterKey() error {
+	// Load current vault data
+	vaultData, currentKey, err := v.load()
+	if err != nil {
+		return fmt.Errorf("failed to load vault data: %w", err)
+	}
+
+	// Generate new master key
+	newKey, err := crypto.GenerateMasterKey()
+	if err != nil {
+		return fmt.Errorf("failed to generate new master key: %w", err)
+	}
+
+	// Create new key version
+	newKeyID := uuid.New().String()
+	keyVersion := KeyVersion{
+		ID:        newKeyID,
+		Key:       newKey,
+		CreatedAt: time.Now(),
+	}
+
+	// Re-encrypt all secrets with new key
+	for id, secret := range vaultData.Secrets {
+		// Decrypt with old key
+		plaintext, err := crypto.Decrypt(currentKey, secret.Value)
+		if err != nil {
+			return fmt.Errorf("failed to decrypt secret during rotation: %w", err)
+		}
+
+		// Re-encrypt with new key
+		newEncrypted, err := crypto.Encrypt(newKey, plaintext)
+		if err != nil {
+			return fmt.Errorf("failed to re-encrypt secret during rotation: %w", err)
+		}
+
+		// Update secret with new encrypted value
+		secret.Value = newEncrypted
+		vaultData.Secrets[id] = secret
+	}
+
+	// Update key version information
+	if vaultData.KeyVersions == nil {
+		vaultData.KeyVersions = make(map[string]KeyVersion)
+	}
+	vaultData.KeyVersions[newKeyID] = keyVersion
+	vaultData.CurrentKeyID = newKeyID
+
+	// Save the new master key
+	if err := os.WriteFile(v.keyFile, newKey, DefaultFileMode); err != nil {
+		return fmt.Errorf("failed to save new master key: %w", err)
+	}
+
+	// Save changes to vault
+	if err := v.save(vaultData, newKey); err != nil {
+		// If saving fails, try to restore the old key
+		if restoreErr := os.WriteFile(v.keyFile, currentKey, DefaultFileMode); restoreErr != nil {
+			return fmt.Errorf("failed to save vault and restore old key: %v (original error: %v)", restoreErr, err)
+		}
+		return fmt.Errorf("failed to save vault: %w", err)
+	}
+
+	return nil
+}
+
+// GetCurrentKeyVersion returns the current key version information
+func (v *Vault) GetCurrentKeyVersion() (*KeyVersion, error) {
+	if v.data.CurrentKeyID == "" {
+		return nil, fmt.Errorf("no current key version set")
+	}
+
+	keyVersion, exists := v.data.KeyVersions[v.data.CurrentKeyID]
+	if !exists {
+		return nil, fmt.Errorf("current key version not found")
+	}
+
+	return &keyVersion, nil
 }

@@ -73,7 +73,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "Error: rotate command requires a key name")
 			fmt.Fprintf(os.Stderr, "\nUsage: %s rotate <key-name>\n", os.Args[0])
 			fmt.Fprintln(os.Stderr, "\nExample:")
-			fmt.Fprintf(os.Stderr, "  %s rotate my-api-key  # Create new key and revoke old one\n", os.Args[0])
+			fmt.Fprintf(os.Stderr, "  %s rotate my-api-key\n", os.Args[0])
 			os.Exit(1)
 		}
 		err = commands.Rotate(args[0])
