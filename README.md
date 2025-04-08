@@ -9,6 +9,7 @@ A secure CLI tool for managing OpenRouter API keys.
 - Usage tracking and monitoring
 - Key rotation capabilities
 - Simple CLI interface
+- Multi-language integrations (Ruby, TypeScript, Python, Go)
 
 ## Installation
 
@@ -35,6 +36,7 @@ sudo cp bin/lean_vault /usr/local/bin/lean_vault
 # Option 3: Install to $GOPATH/bin (if $GOPATH/bin is in your PATH)
 go install ./cmd/lean_vault
 # Now you can use it from anywhere with: lean_vault <command>
+```
 
 ## Quick Start
 
@@ -65,6 +67,17 @@ export OPENROUTER_API_KEY=$(lean_vault get my-key)
 export OPENROUTER_API_KEY=$(bin/lean_vault get my-key)
 ```
 
+## Language Integrations
+
+Lean Vault provides example integrations for multiple programming languages:
+
+- **Ruby**: Constants-based secret management with dotenv-like interface
+- **TypeScript**: Strongly-typed integration with async/await support
+- **Python**: Context manager-based integration with type hints
+- **Go**: Concurrency-safe integration with channel support
+
+See [Language Examples Guide](docs/language_examples.md) for detailed implementation guides and best practices.
+
 ## Security
 
 - Uses AES-256-GCM for encryption
@@ -87,8 +100,9 @@ This will show:
 
 ## Documentation
 
-For detailed usage instructions, see [TUTORIAL.md](TUTORIAL.md).
-For implementation details, see [lean_vault_spec.md](lean_vault_spec.md).
+- [Tutorial](docs/TUTORIAL.md) - Detailed usage instructions
+- [Specification](docs/lean_vault_spec.md) - Implementation details
+- [Language Examples](docs/language_examples.md) - Multi-language integration guides
 
 ## Development
 
@@ -98,11 +112,17 @@ For implementation details, see [lean_vault_spec.md](lean_vault_spec.md).
 lean_vault/
 ├── bin/             # Build outputs
 ├── cmd/
-│   └── lean_vault/          # Main CLI application
+│   └── lean_vault/  # Main CLI application
 ├── pkg/
-│   ├── crypto/       # Encryption utilities
-│   ├── vault/        # Vault management
-│   └── api/          # OpenRouter API client
+│   ├── crypto/      # Encryption utilities
+│   ├── vault/       # Vault management
+│   └── api/         # OpenRouter API client
+├── examples/        # Language integration examples
+│   ├── ruby/
+│   ├── typescript/
+│   ├── python/
+│   └── golang/
+└── docs/           # Documentation
 ```
 
 ### Building from Source
