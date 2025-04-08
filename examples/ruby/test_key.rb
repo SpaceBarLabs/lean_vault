@@ -2,24 +2,22 @@
 
 require 'httparty'
 require 'json'
-require 'dotenv'
 require 'optparse'
 require 'colorize'
+require_relative 'lean_vault'
 
-# Load environment variables from .env file if present
-Dotenv.load
-
-class LeanVaultExample
+class OpenRouterExample
   OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
   
   def initialize(options = {})
-    @key_name = options[:key_name] || ENV['LEAN_VAULT_KEY_NAME'] || 'ruby-app-key'
-    @debug = options[:debug] || ENV['DEBUG'] == 'true'
-    @api_key = nil
+    @debug = options[:debug] || false
   end
 
   def run
-    retrieve_key
+    # Load the API key into a constant (similar to how dotenv works)
+    debug("Loading API key from Lean Vault...")
+    LeanVault.load('ruby-app-key')
+    
     test_openrouter
   rescue => e
     puts "✗ Error: #{e.message}".red
@@ -29,30 +27,13 @@ class LeanVaultExample
 
   private
 
-  def retrieve_key
-    debug("Retrieving key '#{@key_name}' from Lean Vault...")
-    
-    # Execute lean_vault command to get the key
-    output = `lean_vault get #{@key_name} 2>&1`
-    
-    if $?.success?
-      @api_key = output.strip
-      puts "✓ Successfully retrieved key from Lean Vault".green
-      debug("Key length: #{@api_key.length} characters")
-      debug("Key: #{@api_key.inspect}")
-      debug("Key bytes: #{@api_key.bytes.inspect}")
-    else
-      raise "Failed to retrieve key: #{output}"
-    end
-  end
-
   def test_openrouter
     debug("Testing OpenRouter API connection...")
     
     response = HTTParty.post(
       OPENROUTER_API_URL,
       headers: {
-        'Authorization' => "Bearer #{@api_key}",
+        'Authorization' => "Bearer #{LeanVault::RUBY_APP_KEY}",
         'Content-Type' => 'application/json',
         'HTTP-Referer' => 'https://github.com/spacebarlabs/lean_vault/examples/ruby',
       },
@@ -81,10 +62,6 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: test_key.rb [options]"
 
-  opts.on("-k", "--key-name NAME", "Name of the key in Lean Vault") do |name|
-    options[:key_name] = name
-  end
-
   opts.on("-d", "--debug", "Enable debug output") do
     options[:debug] = true
   end
@@ -96,4 +73,4 @@ OptionParser.new do |opts|
 end.parse!
 
 # Run the example
-LeanVaultExample.new(options).run 
+OpenRouterExample.new(options).run 
