@@ -27,30 +27,30 @@
 - [x] Implement existence checks and error handling
 
 ### Add Command (`lean_vault add`)
-- [ ] Implement vault decryption
-- [ ] Add OpenRouter API integration for key provisioning
-- [ ] Implement key storage logic
-- [ ] Add error handling for API failures
-- [ ] Implement vault re-encryption
+- [x] Implement vault decryption
+- [x] Add OpenRouter API integration for key provisioning
+- [x] Implement key storage logic
+- [x] Add error handling for API failures
+- [x] Implement vault re-encryption
 
 ### Get Command (`lean_vault get`)
-- [ ] Implement vault decryption
-- [ ] Add key lookup logic
-- [ ] Implement clean stdout output
-- [ ] Add error handling for missing keys
+- [x] Implement vault decryption
+- [x] Add key lookup logic
+- [x] Implement clean stdout output
+- [x] Add error handling for missing keys
 
 ### List Command (`lean_vault list`)
-- [ ] Implement vault decryption
-- [ ] Add key enumeration logic
-- [ ] Implement filtering of reserved keys
-- [ ] Format output for readability
+- [x] Implement vault decryption
+- [x] Add key enumeration logic
+- [x] Implement filtering of reserved keys
+- [x] Format output for readability
 
 ### Remove Command (`lean_vault remove`)
-- [ ] Implement vault decryption
-- [ ] Add OpenRouter API integration for key revocation
-- [ ] Implement key removal logic
-- [ ] Add error handling for failed revocations
-- [ ] Implement vault re-encryption
+- [x] Implement vault decryption
+- [x] Add OpenRouter API integration for key revocation
+- [x] Implement key removal logic
+- [x] Add error handling for failed revocations
+- [x] Implement vault re-encryption
 
 ### Rotate Command (`lean_vault rotate`)
 - [ ] Implement key rotation workflow
@@ -68,36 +68,36 @@
 ## Data Management
 
 ### Vault Structure
-- [ ] Implement YAML structure for vault
-- [ ] Add encryption/decryption of vault file
-- [ ] Implement secure file operations
-- [ ] Add validation for vault structure
+- [x] Implement YAML structure for vault
+- [x] Add encryption/decryption of vault file
+- [x] Implement secure file operations
+- [x] Add validation for vault structure
 
 ### OpenRouter API Integration
-- [ ] Set up API client
-- [ ] Implement key provisioning endpoints
+- [x] Set up API client
+- [x] Implement key provisioning endpoints
 - [ ] Add key revocation endpoints
 - [ ] Implement usage tracking endpoints
-- [ ] Add error handling for API responses
+- [x] Add error handling for API responses
 
 ## Testing
 
 ### Unit Tests
-- [ ] Test encryption/decryption
-- [ ] Test file operations
-- [ ] Test YAML handling
+- [x] Test encryption/decryption
+- [x] Test file operations
+- [x] Test YAML handling
 - [ ] Test API client
 
 ### Integration Tests
-- [ ] Test CLI commands
-- [ ] Test vault operations
+- [x] Test CLI commands
+- [x] Test vault operations
 - [ ] Test API integration
-- [ ] Test error scenarios
+- [x] Test error scenarios
 
 ### Security Tests
-- [ ] Test file permissions
-- [ ] Test encryption strength
-- [ ] Test key derivation
+- [x] Test file permissions
+- [x] Test encryption strength
+- [x] Test key derivation
 - [ ] Test secure deletion
 
 ## Documentation
@@ -109,9 +109,9 @@
 - [x] Include best practices
 
 ### Developer Documentation
-- [ ] Add code documentation
+- [x] Add code documentation
 - [ ] Create API documentation
-- [ ] Document security measures
+- [x] Document security measures
 - [ ] Add contribution guidelines
 
 ## Post-MVP Features
