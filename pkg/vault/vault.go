@@ -256,3 +256,22 @@ func (v *Vault) GetMainProvisioningKey() (string, error) {
 func (v *Vault) VaultDir() string {
 	return v.vaultDir
 }
+
+// UpdateSecret updates an existing secret in the vault
+func (v *Vault) UpdateSecret(name, value, id string) error {
+	vaultData, masterKey, err := v.load()
+	if err != nil {
+		return err
+	}
+
+	if _, exists := vaultData.Secrets[name]; !exists {
+		return fmt.Errorf("secret %s not found", name)
+	}
+
+	vaultData.Secrets[name] = SecretEntry{
+		Value: value,
+		ID:    id,
+	}
+
+	return v.save(vaultData, masterKey)
+}
