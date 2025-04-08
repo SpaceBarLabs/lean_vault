@@ -3,28 +3,28 @@
 ## Core Infrastructure
 
 ### Project Setup
-- [ ] Initialize Go project structure
-- [ ] Set up dependency management
-- [ ] Create README.md with basic project information
+- [x] Initialize Go project structure
+- [x] Set up dependency management
+- [x] Create README.md with basic project information
 - [ ] Set up build system for static binary distribution
-- [ ] Add `.gitignore` file (include `.lean_vault/` directory)
+- [x] Add `.gitignore` file (include `.lean_vault/` directory)
 
 ### Security Infrastructure
-- [ ] Implement AES-256-GCM encryption utilities
-- [ ] Set up PBKDF2 key derivation
-- [ ] Create secure file operations for vault management
-- [ ] Implement permission checks for sensitive files
-- [ ] Set up OpenSSL integration
+- [x] Implement AES-256-GCM encryption utilities
+- [x] Set up PBKDF2 key derivation
+- [x] Create secure file operations for vault management
+- [x] Implement permission checks for sensitive files
+- [x] Set up OpenSSL integration
 
 ## CLI Commands Implementation
 
 ### Init Command (`lean_vault init`)
-- [ ] Implement directory creation (`~/.lean_vault/`)
-- [ ] Add secure prompt for OpenRouter provisioning key
-- [ ] Implement master key generation
-- [ ] Create encrypted vault file structure
-- [ ] Add file permission restrictions
-- [ ] Implement existence checks and error handling
+- [x] Implement directory creation (`~/.lean_vault/`)
+- [x] Add secure prompt for OpenRouter provisioning key
+- [x] Implement master key generation
+- [x] Create encrypted vault file structure
+- [x] Add file permission restrictions
+- [x] Implement existence checks and error handling
 
 ### Add Command (`lean_vault add`)
 - [ ] Implement vault decryption

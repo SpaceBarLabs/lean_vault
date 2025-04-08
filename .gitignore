@@ -7,6 +7,7 @@
 *.dll
 *.so
 *.dylib
+lean_vault
 
 # Test binary, built with `go test -c`
 *.test
@@ -15,7 +16,7 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
 
 # Go workspace file
 go.work
@@ -23,3 +24,23 @@ go.work.sum
 
 # env file
 .env
+
+# Lean Vault specific
+.lean_vault/
+.secret_vault.key
+secrets.vault
+
+# IDE specific files
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
