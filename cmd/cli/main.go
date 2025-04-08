@@ -22,47 +22,55 @@ func main() {
 	switch cmd {
 	case "init":
 		if len(args) != 0 {
-			fmt.Fprintf(os.Stderr, "Usage: %s init\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "Error: init command takes no arguments")
+			fmt.Fprintf(os.Stderr, "\nUsage: %s init\n", os.Args[0])
 			os.Exit(1)
 		}
 		err = commands.Init()
 	case "add":
 		if len(args) != 1 {
-			fmt.Fprintf(os.Stderr, "Usage: %s add <key-name>\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "Error: add command requires a key name")
+			fmt.Fprintf(os.Stderr, "\nUsage: %s add <key-name>\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "\nExample:")
+			fmt.Fprintf(os.Stderr, "  %s add my-api-key\n", os.Args[0])
 			os.Exit(1)
 		}
-		// TODO: Implement add command
-		fmt.Println("Add command not implemented yet")
+		err = commands.Add(args[0])
 	case "get":
 		if len(args) != 1 {
-			fmt.Fprintf(os.Stderr, "Usage: %s get <key-name>\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "Error: get command requires a key name")
+			fmt.Fprintf(os.Stderr, "\nUsage: %s get <key-name>\n", os.Args[0])
 			os.Exit(1)
 		}
 		// TODO: Implement get command
 		fmt.Println("Get command not implemented yet")
 	case "list":
 		if len(args) != 0 {
-			fmt.Fprintf(os.Stderr, "Usage: %s list\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "Error: list command takes no arguments")
+			fmt.Fprintf(os.Stderr, "\nUsage: %s list\n", os.Args[0])
 			os.Exit(1)
 		}
 		err = commands.List()
 	case "remove":
 		if len(args) != 1 {
-			fmt.Fprintf(os.Stderr, "Usage: %s remove <key-name>\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "Error: remove command requires a key name")
+			fmt.Fprintf(os.Stderr, "\nUsage: %s remove <key-name>\n", os.Args[0])
 			os.Exit(1)
 		}
 		// TODO: Implement remove command
 		fmt.Println("Remove command not implemented yet")
 	case "rotate":
 		if len(args) != 1 {
-			fmt.Fprintf(os.Stderr, "Usage: %s rotate <key-name>\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "Error: rotate command requires a key name")
+			fmt.Fprintf(os.Stderr, "\nUsage: %s rotate <key-name>\n", os.Args[0])
 			os.Exit(1)
 		}
 		// TODO: Implement rotate command
 		fmt.Println("Rotate command not implemented yet")
 	case "usage":
 		if len(args) != 0 {
-			fmt.Fprintf(os.Stderr, "Usage: %s usage\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "Error: usage command takes no arguments")
+			fmt.Fprintf(os.Stderr, "\nUsage: %s usage\n", os.Args[0])
 			os.Exit(1)
 		}
 		// TODO: Implement usage command
@@ -70,7 +78,7 @@ func main() {
 	case "version":
 		fmt.Printf("lean_vault version %s\n", version)
 	default:
-		fmt.Fprintf(os.Stderr, "Unknown command: %s\n", cmd)
+		fmt.Fprintf(os.Stderr, "Error: Unknown command: %s\n", cmd)
 		printUsage()
 		os.Exit(1)
 	}

@@ -17,24 +17,32 @@ A secure CLI tool for managing OpenRouter API keys.
 For now, to build from source:
 
 ```bash
-go install github.com/spacebarlabs/lean_vault@latest
+# Clone the repository
+git clone https://github.com/spacebarlabs/lean_vault.git
+cd lean_vault
+
+# Build the binary
+go build -o lean_vault ./cmd/cli
+
+# Optional: Install to your $GOPATH/bin
+go install ./cmd/cli
 ```
 
 ## Quick Start
 
 1. Initialize the vault:
 ```bash
-lean_vault init
+./lean_vault init
 ```
 
 2. Add a new API key:
 ```bash
-lean_vault add my-key
+./lean_vault add my-key
 ```
 
 3. Use the key in your applications:
 ```bash
-export OPENROUTER_API_KEY=$(lean_vault get my-key)
+export OPENROUTER_API_KEY=$(./lean_vault get my-key)
 ```
 
 ## Security
@@ -43,6 +51,19 @@ export OPENROUTER_API_KEY=$(lean_vault get my-key)
 - PBKDF2 key derivation
 - Secure file permissions
 - No plaintext storage of secrets
+
+## Debugging
+
+If you encounter issues, you can enable debug mode by setting the `LEAN_VAULT_DEBUG` environment variable:
+
+```bash
+LEAN_VAULT_DEBUG=1 ./lean_vault add my-key
+```
+
+This will show:
+- API request details
+- Response status and body
+- Detailed error messages
 
 ## Documentation
 
@@ -56,17 +77,27 @@ For implementation details, see [lean_vault_spec.md](lean_vault_spec.md).
 ```
 lean_vault/
 ├── cmd/
-│   └── lean_vault/     # Main CLI application
+│   └── cli/          # Main CLI application
 ├── pkg/
-│   ├── crypto/        # Encryption utilities
-│   ├── vault/         # Vault management
-│   └── api/           # OpenRouter API client
+│   ├── crypto/       # Encryption utilities
+│   ├── vault/        # Vault management
+│   └── api/          # OpenRouter API client
 ```
 
-### Building
+### Building from Source
 
 ```bash
-go build ./cmd/lean_vault
+# Development build
+go build -o lean_vault ./cmd/cli
+
+# Production build (static binary)
+CGO_ENABLED=0 go build -ldflags="-s -w" -o lean_vault ./cmd/cli
+```
+
+### Running Tests
+
+```bash
+go test ./...
 ```
 
 ## License

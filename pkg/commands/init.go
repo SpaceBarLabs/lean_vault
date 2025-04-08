@@ -15,6 +15,17 @@ func Init() error {
 	// Create a new vault instance
 	v := vault.New()
 
+	// Check if vault already exists before showing any prompts
+	if _, err := os.Stat(v.VaultDir()); err == nil {
+		fmt.Fprintln(os.Stderr, "\n⚠️  Vault already exists!")
+		fmt.Fprintln(os.Stderr, "Location:", v.VaultDir())
+		fmt.Fprintln(os.Stderr, "\nTo start fresh:")
+		fmt.Fprintf(os.Stderr, "1. Remove the existing vault: rm -rf %s\n", v.VaultDir())
+		fmt.Fprintln(os.Stderr, "2. Run 'lean_vault init' again")
+		fmt.Fprintln(os.Stderr, "\n⚠️  Warning: Removing the vault will delete all stored API keys!")
+		return fmt.Errorf("vault already initialized")
+	}
+
 	// Print instructions
 	fmt.Fprintln(os.Stderr, "Initialize your Lean Vault")
 	fmt.Fprintln(os.Stderr, "------------------------")
@@ -42,6 +53,16 @@ func Init() error {
 
 	// Initialize the vault
 	if err := v.Init(keyStr); err != nil {
+		// This should rarely happen since we checked earlier, but handle it just in case
+		if strings.Contains(err.Error(), "already exists") {
+			fmt.Fprintln(os.Stderr, "\n⚠️  Another process may have initialized the vault!")
+			fmt.Fprintln(os.Stderr, "Location:", v.VaultDir())
+			fmt.Fprintln(os.Stderr, "\nTo start fresh:")
+			fmt.Fprintf(os.Stderr, "1. Remove the existing vault: rm -rf %s\n", v.VaultDir())
+			fmt.Fprintln(os.Stderr, "2. Run 'lean_vault init' again")
+			fmt.Fprintln(os.Stderr, "\n⚠️  Warning: Removing the vault will delete all stored API keys!")
+			return fmt.Errorf("vault already initialized")
+		}
 		return fmt.Errorf("failed to initialize vault: %w", err)
 	}
 
