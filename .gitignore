@@ -7,7 +7,6 @@
 *.dll
 *.so
 *.dylib
-lean_vault
 
 # Test binary, built with `go test -c`
 *.test
