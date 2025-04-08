@@ -6,36 +6,8 @@ This example demonstrates how to integrate Lean Vault into a Ruby application fo
 
 - Ruby 3.0 or higher
 - Bundler
-- Lean Vault CLI tool (see below)
+- Lean Vault CLI tool installed and in your PATH (see [root README](../../README.md) for installation instructions)
 - At least one API key stored in your vault
-
-### Installing Lean Vault CLI
-
-Before running this example, ensure you have the Lean Vault CLI tool installed and accessible in your PATH. You have three options:
-
-1. **Build and use locally** (from project root):
-```bash
-go build -o lean_vault ./cmd/cli
-# Then either:
-export PATH="$PATH:$(pwd)"  # Temporary: only for current session
-# Or move it to a PATH directory:
-sudo mv lean_vault /usr/local/bin/
-```
-
-2. **Install directly to PATH**:
-```bash
-go build -o /usr/local/bin/lean_vault ./cmd/cli
-```
-
-3. **Install to $GOPATH/bin** (if in your PATH):
-```bash
-go install ./cmd/cli
-```
-
-Verify the installation:
-```bash
-lean_vault --version  # Should show version information
-```
 
 ## Setup
 
@@ -46,7 +18,7 @@ bundle install
 
 2. Create a `.env` file (optional):
 ```bash
-LEAN_VAULT_KEY_NAME=my-key  # The name of your stored key
+LEAN_VAULT_KEY_NAME=ruby-app-key  # The name of your stored key
 DEBUG=true                  # Enable debug output
 ```
 

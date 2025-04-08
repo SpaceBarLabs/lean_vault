@@ -52,13 +52,23 @@ func main() {
 		}
 		err = commands.List()
 	case "remove":
-		if len(args) != 1 {
+		if len(args) < 1 {
 			fmt.Fprintln(os.Stderr, "Error: remove command requires a key name")
-			fmt.Fprintf(os.Stderr, "\nUsage: %s remove <key-name>\n", os.Args[0])
+			fmt.Fprintf(os.Stderr, "\nUsage: %s remove <key-name> [--force]\n", os.Args[0])
+			fmt.Fprintln(os.Stderr, "\nOptions:")
+			fmt.Fprintln(os.Stderr, "  --force    Remove the key from vault without attempting revocation")
+			fmt.Fprintln(os.Stderr, "\nExample:")
+			fmt.Fprintf(os.Stderr, "  %s remove my-api-key\n", os.Args[0])
+			fmt.Fprintf(os.Stderr, "  %s remove my-api-key --force  # Skip revocation attempt\n", os.Args[0])
 			os.Exit(1)
 		}
-		// TODO: Implement remove command
-		fmt.Println("Remove command not implemented yet")
+
+		keyName := args[0]
+		force := false
+		if len(args) > 1 && args[1] == "--force" {
+			force = true
+		}
+		err = commands.Remove(keyName, force)
 	case "rotate":
 		if len(args) != 1 {
 			fmt.Fprintln(os.Stderr, "Error: rotate command requires a key name")
