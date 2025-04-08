@@ -399,11 +399,16 @@ func (v *Vault) RotateMasterKey() error {
 
 // GetCurrentKeyVersion returns the current key version information
 func (v *Vault) GetCurrentKeyVersion() (*KeyVersion, error) {
-	if v.data.CurrentKeyID == "" {
+	vaultData, _, err := v.load()
+	if err != nil {
+		return nil, fmt.Errorf("failed to load vault data: %w", err)
+	}
+
+	if vaultData.CurrentKeyID == "" {
 		return nil, fmt.Errorf("no current key version set")
 	}
 
-	keyVersion, exists := v.data.KeyVersions[v.data.CurrentKeyID]
+	keyVersion, exists := vaultData.KeyVersions[vaultData.CurrentKeyID]
 	if !exists {
 		return nil, fmt.Errorf("current key version not found")
 	}
