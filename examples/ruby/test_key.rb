@@ -39,6 +39,8 @@ class LeanVaultExample
       @api_key = output.strip
       puts "✓ Successfully retrieved key from Lean Vault".green
       debug("Key length: #{@api_key.length} characters")
+      debug("Key: #{@api_key.inspect}")
+      debug("Key bytes: #{@api_key.bytes.inspect}")
     else
       raise "Failed to retrieve key: #{output}"
     end

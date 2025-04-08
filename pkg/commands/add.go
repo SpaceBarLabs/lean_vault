@@ -37,7 +37,7 @@ func Add(keyName string) error {
 	}
 
 	// Store the new key in the vault
-	err = v.AddSecret(keyName, resp.Data.Key, resp.Data.Hash)
+	err = v.AddSecret(keyName, resp.Key, resp.Data.Hash)
 	if err != nil {
 		return fmt.Errorf("failed to store API key: %w", err)
 	}

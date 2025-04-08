@@ -42,8 +42,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "\nUsage: %s get <key-name>\n", os.Args[0])
 			os.Exit(1)
 		}
-		// TODO: Implement get command
-		fmt.Println("Get command not implemented yet")
+		err = commands.Get(args[0])
 	case "list":
 		if len(args) != 0 {
 			fmt.Fprintln(os.Stderr, "Error: list command takes no arguments")

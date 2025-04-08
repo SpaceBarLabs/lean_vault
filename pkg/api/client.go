@@ -23,9 +23,15 @@ type Client struct {
 
 // KeyResponse represents the response from key creation
 type KeyResponse struct {
+	Key  string `json:"key"`
 	Data struct {
-		Key  string `json:"key"`
-		Hash string `json:"hash"`
+		Name      string  `json:"name"`
+		Label     string  `json:"label,omitempty"`
+		Limit     float64 `json:"limit,omitempty"`
+		Disabled  bool    `json:"disabled"`
+		CreatedAt string  `json:"created_at"`
+		UpdatedAt string  `json:"updated_at"`
+		Hash      string  `json:"hash"`
 	} `json:"data"`
 }
 
@@ -44,11 +50,11 @@ func (c *Client) SetDebug(debug bool) {
 }
 
 // CreateKey creates a new API key
-func (c *Client) CreateKey(label string) (*KeyResponse, error) {
-	url := fmt.Sprintf("%s/auth/keys", c.baseURL)
+func (c *Client) CreateKey(name string) (*KeyResponse, error) {
+	url := fmt.Sprintf("%s/keys", c.baseURL)
 
-	payload := map[string]string{
-		"label": label,
+	payload := map[string]interface{}{
+		"name": name,
 	}
 
 	jsonData, err := json.Marshal(payload)
@@ -65,8 +71,9 @@ func (c *Client) CreateKey(label string) (*KeyResponse, error) {
 	req.Header.Set("Content-Type", "application/json")
 
 	if c.debug {
-		fmt.Fprintf(os.Stderr, "DEBUG: Creating key with label: %s\n", label)
+		fmt.Fprintf(os.Stderr, "DEBUG: Creating key with name: %s\n", name)
 		fmt.Fprintf(os.Stderr, "DEBUG: URL: %s\n", url)
+		fmt.Fprintf(os.Stderr, "DEBUG: Request body: %s\n", string(jsonData))
 	}
 
 	resp, err := c.httpClient.Do(req)
@@ -99,7 +106,7 @@ func (c *Client) CreateKey(label string) (*KeyResponse, error) {
 
 // RevokeKey revokes an API key
 func (c *Client) RevokeKey(keyID string) error {
-	url := fmt.Sprintf("%s/auth/keys/%s", c.baseURL, keyID)
+	url := fmt.Sprintf("%s/keys/%s", c.baseURL, keyID)
 
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
