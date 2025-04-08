@@ -44,3 +44,6 @@ secrets.vault
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Remove direct binary ignore and add bin directory
+bin/

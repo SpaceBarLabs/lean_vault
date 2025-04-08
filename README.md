@@ -21,28 +21,48 @@ For now, to build from source:
 git clone https://github.com/spacebarlabs/lean_vault.git
 cd lean_vault
 
-# Build the binary
-go build -o lean_vault ./cmd/cli
+# Build the binary (choose one of these options):
 
-# Optional: Install to your $GOPATH/bin
-go install ./cmd/cli
-```
+# Option 1: Build and use locally
+go build -o bin/lean_vault ./cmd/lean_vault
+# The binary will be created as bin/lean_vault in the project directory
+# You can now use it with bin/lean_vault <command>
+
+# Option 2: Install to your PATH
+sudo cp bin/lean_vault /usr/local/bin/lean_vault
+# Now you can use it from anywhere with: lean_vault <command>
+
+# Option 3: Install to $GOPATH/bin (if $GOPATH/bin is in your PATH)
+go install ./cmd/lean_vault
+# Now you can use it from anywhere with: lean_vault <command>
 
 ## Quick Start
 
 1. Initialize the vault:
 ```bash
-./lean_vault init
+# If installed to PATH:
+lean_vault init
+
+# If using locally:
+bin/lean_vault init
 ```
 
 2. Add a new API key:
 ```bash
-./lean_vault add my-key
+# If installed to PATH:
+lean_vault add my-key
+
+# If using locally:
+bin/lean_vault add my-key
 ```
 
 3. Use the key in your applications:
 ```bash
-export OPENROUTER_API_KEY=$(./lean_vault get my-key)
+# If installed to PATH:
+export OPENROUTER_API_KEY=$(lean_vault get my-key)
+
+# If using locally:
+export OPENROUTER_API_KEY=$(bin/lean_vault get my-key)
 ```
 
 ## Security
@@ -57,7 +77,7 @@ export OPENROUTER_API_KEY=$(./lean_vault get my-key)
 If you encounter issues, you can enable debug mode by setting the `LEAN_VAULT_DEBUG` environment variable:
 
 ```bash
-LEAN_VAULT_DEBUG=1 ./lean_vault add my-key
+LEAN_VAULT_DEBUG=1 bin/lean_vault add my-key
 ```
 
 This will show:
@@ -76,8 +96,9 @@ For implementation details, see [lean_vault_spec.md](lean_vault_spec.md).
 
 ```
 lean_vault/
+├── bin/             # Build outputs
 ├── cmd/
-│   └── cli/          # Main CLI application
+│   └── lean_vault/          # Main CLI application
 ├── pkg/
 │   ├── crypto/       # Encryption utilities
 │   ├── vault/        # Vault management
@@ -88,10 +109,10 @@ lean_vault/
 
 ```bash
 # Development build
-go build -o lean_vault ./cmd/cli
+go build -o bin/lean_vault ./cmd/lean_vault
 
 # Production build (static binary)
-CGO_ENABLED=0 go build -ldflags="-s -w" -o lean_vault ./cmd/cli
+CGO_ENABLED=0 go build -ldflags="-s -w" -o bin/lean_vault ./cmd/lean_vault
 ```
 
 ### Running Tests

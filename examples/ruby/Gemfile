@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'httparty', '~> 0.21.0'      # For making HTTP requests
+gem 'dotenv', '~> 2.8.1'         # For environment variable management
+gem 'optparse', '~> 0.3.1'       # For command line argument parsing
+gem 'colorize', '~> 1.1'         # For colorized terminal output 
