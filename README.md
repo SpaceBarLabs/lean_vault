@@ -259,7 +259,7 @@ We welcome contributions to Lean Vault! Here's how you can help:
 
 4. **Code Style**
    - Run `gofmt` before committing
-   - Follow the [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
+   - Follow the [Go Code Review Comments](https://go.dev/wiki/CodeReviewComments)
    - Use `golint` and `go vet` to check your code
 
 5. **Testing**
@@ -282,5 +282,3 @@ We welcome contributions to Lean Vault! Here's how you can help:
    - Help review pull requests
    - Answer questions in issues
    - Share your use cases and experiences
-
-For more detailed information, see our [Contributing Guide](CONTRIBUTING.md).

@@ -1,10 +1,17 @@
 # Language Examples Guide
 
-This document outlines the implementation of Lean Vault examples in multiple programming languages. Each example demonstrates best practices for integrating Lean Vault into your applications, with a focus on key management and rotation.
+This document outlines the implementation of Lean Vault examples in multiple programming languages. Currently, only the Ruby implementation is available, with other language integrations planned for future releases.
+
+## Current Status
+
+- ✅ **Ruby**: Fully implemented and ready to use
+- 🚧 **TypeScript**: Coming soon
+- 🚧 **Python**: Coming soon
+- 🚧 **Go**: Coming soon
 
 ## Common Features
 
-All language examples implement these core features:
+All language examples will implement these core features:
 
 1. **Key Management**
    - Loading keys from vault
@@ -30,9 +37,9 @@ All language examples implement these core features:
 
 ## Language-Specific Implementations
 
-### Ruby (Reference Implementation)
+### Ruby (Current Implementation)
 
-The Ruby implementation serves as our reference, demonstrating core patterns:
+The Ruby implementation is our first and currently only available integration:
 
 ```ruby
 # Key loading (dotenv-style)
@@ -49,7 +56,9 @@ Key features:
 - Zero-downtime rotation
 - Comprehensive error handling
 
-### TypeScript Implementation
+For detailed documentation and examples, see the [Ruby Integration Guide](../examples/ruby/README.md).
+
+### TypeScript (Coming Soon)
 
 ```typescript
 // Key management
@@ -61,13 +70,13 @@ console.log(LeanVault.get('my-key'));
 new KeyRotationExample({ debug: true }).run();
 ```
 
-TypeScript-specific enhancements:
+Planned TypeScript-specific enhancements:
 - Strong typing for all operations
 - Async/await for API operations
 - Interface definitions
 - Error type hierarchies
 
-### Python Implementation
+### Python (Coming Soon)
 
 ```python
 # Key management
@@ -79,13 +88,13 @@ print(LeanVault.get('my-key'))
 KeyRotationExample(debug=True).run()
 ```
 
-Python-specific enhancements:
+Planned Python-specific enhancements:
 - Context managers for resource handling
 - Dataclasses for structured data
 - Type hints throughout
 - Async support (optional)
 
-### Go Implementation
+### Go (Coming Soon)
 
 ```go
 // Key management
@@ -100,7 +109,7 @@ rotation := keyrotation.New(keyrotation.Options{
 rotation.Run()
 ```
 
-Go-specific enhancements:
+Planned Go-specific enhancements:
 - Concurrency-safe operations
 - Channel-based communication
 - Strong error handling patterns
@@ -108,40 +117,32 @@ Go-specific enhancements:
 
 ## Project Structure
 
+Current structure (Ruby only):
 ```
 examples/
-├── typescript/
-│   ├── package.json
-│   ├── tsconfig.json
-│   ├── src/
-│   │   ├── LeanVault.ts        # Core vault integration
-│   │   ├── keyRotation.ts      # Key rotation example
-│   │   └── test.ts            # Basic usage example
-│   └── README.md
-├── python/
-│   ├── requirements.txt
-│   ├── lean_vault.py          # Core vault integration
-│   ├── key_rotation.py        # Key rotation example
-│   ├── test.py               # Basic usage example
-│   └── README.md
-└── golang/
-    ├── go.mod
-    ├── go.sum
-    ├── leanvault/
-    │   └── leanvault.go       # Core vault integration
-    ├── cmd/
-    │   ├── keyrotation/
-    │   │   └── main.go        # Key rotation example
-    │   └── test/
-    │       └── main.go        # Basic usage example
+└── ruby/
+    ├── lib/
+    │   └── lean_vault.rb      # Core vault integration
+    ├── examples/
+    │   ├── key_rotation.rb    # Key rotation example
+    │   └── basic_usage.rb     # Basic usage example
     └── README.md
+```
+
+Future structure (planned):
+```
+examples/
+├── ruby/          # ✅ Implemented
+├── typescript/    # 🚧 Coming soon
+├── python/        # 🚧 Coming soon
+└── golang/        # 🚧 Coming soon
 ```
 
 ## Implementation Guidelines
 
 ### 1. Core Integration (LeanVault Class/Module)
 
-Each implementation should provide:
+Each implementation will provide:
 - Key loading functionality
 - Constant/environment-like access
 - Error handling
@@ -159,7 +160,7 @@ interface VaultInterface {
 
 ### 2. Key Rotation Example
 
-Each implementation should demonstrate:
+Each implementation will demonstrate:
 - Safe key rotation process
 - Pre-rotation validation
 - Post-rotation validation
@@ -177,7 +178,7 @@ interface RotationOptions {
 
 ### 3. Basic Usage Example
 
-Each implementation should include:
+Each implementation will include:
 - Simple key loading
 - OpenRouter API integration
 - Error handling examples
@@ -185,7 +186,7 @@ Each implementation should include:
 
 ## Testing
 
-Each implementation should include tests for:
+Each implementation will include tests for:
 1. Basic key operations
 2. Key rotation scenarios
 3. Error handling
@@ -203,7 +204,7 @@ describe('LeanVault', () => {
 
 ## Documentation
 
-Each language example includes:
+Each language example will include:
 1. README with setup instructions
 2. Code comments explaining key concepts
 3. Example output and error scenarios
