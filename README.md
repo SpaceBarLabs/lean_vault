@@ -22,49 +22,34 @@ For now, to build from source:
 git clone https://github.com/spacebarlabs/lean_vault.git
 cd lean_vault
 
-# Build the binary (choose one of these options):
-
-# Option 1: Build and use locally
-go build -o bin/lean_vault ./cmd/lean_vault
-# The binary will be created as bin/lean_vault in the project directory
-# You can now use it with bin/lean_vault <command>
-
-# Option 2: Install to your PATH
-sudo cp bin/lean_vault /usr/local/bin/lean_vault
-# Now you can use it from anywhere with: lean_vault <command>
-
-# Option 3: Install to $GOPATH/bin (if $GOPATH/bin is in your PATH)
+# Install to $GOPATH/bin (recommended)
 go install ./cmd/lean_vault
-# Now you can use it from anywhere with: lean_vault <command>
+
+# Verify $GOPATH/bin is in your PATH
+echo $PATH | grep -q "$GOPATH/bin" || echo "Warning: $GOPATH/bin is not in your PATH"
+# If not in PATH, add it to your shell configuration:
+# For bash: echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
+# For zsh:  echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.zshrc
+
+# Verify installation
+lean_vault version
 ```
 
 ## Quick Start
 
 1. Initialize the vault:
 ```bash
-# If installed to PATH:
 lean_vault init
-
-# If using locally:
-bin/lean_vault init
 ```
 
 2. Add a new API key:
 ```bash
-# If installed to PATH:
 lean_vault add my-key
-
-# If using locally:
-bin/lean_vault add my-key
 ```
 
 3. Use the key in your applications:
 ```bash
-# If installed to PATH:
 export OPENROUTER_API_KEY=$(lean_vault get my-key)
-
-# If using locally:
-export OPENROUTER_API_KEY=$(bin/lean_vault get my-key)
 ```
 
 ## Command Lifecycle
@@ -195,12 +180,19 @@ lean_vault/
 
 ### Building from Source
 
+For development and testing, you can build the binary locally:
+
 ```bash
-# Development build
+# Development build (with debug information)
 go build -o bin/lean_vault ./cmd/lean_vault
 
-# Production build (static binary)
+# Production build (static binary, smaller size)
 CGO_ENABLED=0 go build -ldflags="-s -w" -o bin/lean_vault ./cmd/lean_vault
+```
+
+The binary will be created in the `bin/` directory. You can then run it directly:
+```bash
+./bin/lean_vault <command>
 ```
 
 ### Running Tests
