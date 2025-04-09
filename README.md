@@ -67,6 +67,74 @@ export OPENROUTER_API_KEY=$(lean_vault get my-key)
 export OPENROUTER_API_KEY=$(bin/lean_vault get my-key)
 ```
 
+## Command Lifecycle
+
+Here's a walkthrough of how to use Lean Vault in your daily workflow:
+
+1. **Initialize Your Vault** (First-time setup)
+   ```bash
+   lean_vault init
+   ```
+   This creates your encrypted vault and sets up the necessary configuration.
+
+2. **Add Your First API Key**
+   ```bash
+   lean_vault add my-production-key
+   ```
+   This will prompt you to enter your OpenRouter API key securely.
+
+3. **List Your Keys**
+   ```bash
+   lean_vault list
+   ```
+   View all your stored API keys and their status.
+
+4. **Use a Key in Your Application**
+   ```bash
+   export OPENROUTER_API_KEY=$(lean_vault get my-production-key)
+   ```
+   Retrieve a key for use in your application or scripts.
+
+5. **Rotate a Key** (When needed)
+   ```bash
+   lean_vault rotate my-production-key
+   ```
+   This creates a new key and automatically revokes the old one.
+
+6. **Remove a Key**
+   ```bash
+   lean_vault remove my-production-key
+   ```
+   This removes the key and attempts to revoke it on OpenRouter.
+   
+   If you need to force remove without revocation:
+   ```bash
+   lean_vault remove my-production-key --force
+   ```
+
+7. **Check Version**
+   ```bash
+   lean_vault version
+   ```
+   Verify which version of Lean Vault you're running.
+
+8. **Monitor Usage** (Coming Soon)
+   ```bash
+   lean_vault usage
+   ```
+   Track API usage across all your keys.
+
+## Available Commands
+
+- `init` - Initialize the vault
+- `add <key-name>` - Add a new OpenRouter API key
+- `get <key-name>` - Retrieve a stored key
+- `list` - List all stored keys
+- `remove <key-name> [--force]` - Remove and revoke a key (use --force to skip revocation)
+- `rotate <key-name>` - Rotate a key (create new + revoke old)
+- `usage` - Display usage information for all keys (coming soon)
+- `version` - Show version information
+
 ## Language Integrations
 
 Lean Vault provides example integrations for multiple programming languages:
