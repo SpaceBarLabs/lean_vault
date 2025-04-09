@@ -120,16 +120,37 @@ Here's a walkthrough of how to use Lean Vault in your daily workflow:
 - `usage` - Display usage information for all keys (coming soon)
 - `version` - Show version information
 
-## Language Integrations
+## Language Support
 
-Lean Vault provides example integrations for multiple programming languages:
+Currently, Lean Vault provides a Ruby integration example that demonstrates how to use the CLI tool in a Ruby application. This serves as a reference implementation for other languages.
 
-- **Ruby**: Constants-based secret management with dotenv-like interface
-- **TypeScript**: Strongly-typed integration with async/await support
-- **Python**: Context manager-based integration with type hints
-- **Go**: Concurrency-safe integration with channel support
+### Ruby Integration
 
-See [Language Examples Guide](docs/language_examples.md) for detailed implementation guides and best practices.
+The Ruby integration provides a simple interface for managing API keys in your Ruby applications:
+
+```ruby
+require 'lean_vault'
+
+# Initialize the vault client
+vault = LeanVault::Client.new
+
+# Get an API key
+api_key = vault.get_key('my-production-key')
+
+# Use the key in your application
+client = OpenRouter::Client.new(api_key: api_key)
+```
+
+For more details and examples, see the [Ruby Integration Guide](examples/ruby/README.md).
+
+### Future Language Support
+
+We plan to add official language integrations in the future, including:
+- TypeScript/JavaScript
+- Python
+- Go
+
+These will be released as separate packages with proper versioning and documentation. For now, you can use the CLI tool directly in any language by executing the binary and parsing its output.
 
 ## Security
 
