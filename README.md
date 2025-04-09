@@ -203,8 +203,63 @@ go test ./...
 
 ## License
 
-*TBD*
+Lean Vault is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+The MIT License is a permissive license that:
+- Allows commercial use
+- Allows modification
+- Allows distribution
+- Allows private use
+- Includes a limitation of liability
+- Includes a warranty shield
 
 ## Contributing
 
-*Coming soon*
+We welcome contributions to Lean Vault! Here's how you can help:
+
+1. **Reporting Issues**
+   - Check existing issues before creating a new one
+   - Include steps to reproduce, expected behavior, and actual behavior
+   - Include system information (OS, Go version, etc.)
+
+2. **Submitting Pull Requests**
+   - Fork the repository
+   - Create a feature branch (`git checkout -b feature/amazing-feature`)
+   - Commit your changes (`git commit -m 'Add amazing feature'`)
+   - Push to the branch (`git push origin feature/amazing-feature`)
+   - Open a Pull Request
+
+3. **Development Guidelines**
+   - Follow Go best practices and idioms
+   - Write tests for new features
+   - Update documentation for significant changes
+   - Keep commits focused and atomic
+   - Use meaningful commit messages
+
+4. **Code Style**
+   - Run `gofmt` before committing
+   - Follow the [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
+   - Use `golint` and `go vet` to check your code
+
+5. **Testing**
+   - Write unit tests for new features
+   - Ensure all tests pass (`go test ./...`)
+   - Add integration tests for significant changes
+
+6. **Documentation**
+   - Update README.md for user-facing changes
+   - Add or update docstrings for new functions
+   - Keep the Command Lifecycle section up to date
+
+7. **Security**
+   - Do not commit sensitive information
+   - Report security vulnerabilities privately to security@spacebarlabs.com
+   - Follow secure coding practices
+
+8. **Community**
+   - Be respectful and inclusive
+   - Help review pull requests
+   - Answer questions in issues
+   - Share your use cases and experiences
+
+For more detailed information, see our [Contributing Guide](CONTRIBUTING.md).
