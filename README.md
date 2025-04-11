@@ -13,9 +13,43 @@ A secure CLI tool for managing OpenRouter API keys.
 
 ## Installation
 
-*Coming soon - The tool will be distributed as a static binary.*
+### Prerequisites
 
-For now, to build from source:
+First, you'll need to install Go (version 1.21 or later):
+
+#### macOS
+```bash
+# Using Homebrew
+brew install go
+
+# Verify installation
+go version
+```
+
+#### Linux
+```bash
+# Ubuntu/Debian
+sudo apt update
+sudo apt install golang-go
+
+# Fedora
+sudo dnf install golang
+
+# Verify installation
+go version
+```
+
+#### Windows
+1. Download the installer from [golang.org/dl](https://golang.org/dl/)
+2. Run the installer and follow the prompts
+3. Open a new terminal and verify the installation:
+```bash
+go version
+```
+
+### Installing Lean Vault
+
+Once Go is installed, you can install Lean Vault:
 
 ```bash
 # Clone the repository
@@ -27,13 +61,17 @@ go install ./cmd/lean_vault
 
 # Verify $GOPATH/bin is in your PATH
 echo $PATH | grep -q "$GOPATH/bin" || echo "Warning: $GOPATH/bin is not in your PATH"
-# If not in PATH, add it to your shell configuration:
+
+# If the warning appears, add Go's bin directory to your PATH:
 # For bash: echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
 # For zsh:  echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.zshrc
+# For Windows: Add %GOPATH%\bin to your System Environment Variables
 
 # Verify installation
 lean_vault version
 ```
+
+If you encounter any issues during installation, please check our [Troubleshooting Guide](docs/TROUBLESHOOTING.md).
 
 ## Quick Start
 
